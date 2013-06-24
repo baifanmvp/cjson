@@ -122,15 +122,21 @@ cjson* cjson_obj_idx(cjson* pJson, int idx)
 
 
 
-cjson* cjson_set_obj(cjson* pJson, const char* name, cjson* obj)
+bbool cjson_set_obj(cjson* pJson, const char* name, cjson* obj)
 {
     if(!pJson || !name || !obj)
     {
-        return NULL;
+        return 0;
     }
     cJSON* lp_dest_json = pJson->item ? pJson->item : pJson->child;
     cJSON* lp_src_json = obj->item ? obj->item : obj->child;
 
+    if(!lp_dest_json || lp_dest_json->type != cJSON_Object)
+    {
+        return 0;
+    }
+    
+    
     if(cJSON_GetObjectItem(lp_dest_json, name)!= NULL)
     {
         cJSON_ReplaceItemInObject(lp_dest_json, name, lp_src_json);
@@ -140,18 +146,23 @@ cjson* cjson_set_obj(cjson* pJson, const char* name, cjson* obj)
         cJSON_AddItemToObject(lp_dest_json, name, lp_src_json);
     }
     free(obj);
-    return pJson;
+    return 1;
 }
 
 
 
-cjson* cjson_set_str(cjson* pJson, const char* name, char* str)
+bbool cjson_set_str(cjson* pJson, const char* name, char* str)
 {
     if(!pJson || !name || !str)
     {
-        return NULL;
+        return 0;
     }
     cJSON* lp_dest_json = pJson->item ? pJson->item : pJson->child;
+    
+    if(!lp_dest_json || lp_dest_json->type != cJSON_Object)
+    {
+        return 0;
+    }
     
     if(cJSON_GetObjectItem(lp_dest_json, name)!= NULL)
     {
@@ -162,20 +173,26 @@ cjson* cjson_set_str(cjson* pJson, const char* name, char* str)
         cJSON_AddItemToObject(lp_dest_json, name, cJSON_CreateString(str));
     }
     
-    return pJson;
+    return 1;
 }
 
 
 
 
 
-cjson* cjson_set_num(cjson* pJson, const char* name, int num)
+bbool cjson_set_num(cjson* pJson, const char* name, int num)
 {
     if(!pJson || !name)
     {
-        return NULL;
+        return 0;
     }
     cJSON* lp_dest_json = pJson->item ? pJson->item : pJson->child;
+    
+    if(!lp_dest_json || lp_dest_json->type != cJSON_Object)
+    {
+        return 0;
+    }
+    
     
     if(cJSON_GetObjectItem(lp_dest_json, name)!= NULL)
     {
@@ -186,17 +203,23 @@ cjson* cjson_set_num(cjson* pJson, const char* name, int num)
         cJSON_AddItemToObject(lp_dest_json, name, cJSON_CreateNumber(num));
     }
     
-    return pJson;
+    return 1;
 }
 
-cjson* cjson_set_bool(cjson* pJson, const char* name, bbool b)
+bbool cjson_set_bool(cjson* pJson, const char* name, bbool b)
 {
     if(!pJson || !name)
     {
-        return NULL;
+        return 0;
     }
     cJSON* lp_dest_json = pJson->item ? pJson->item : pJson->child;
     
+    if(!lp_dest_json ||lp_dest_json->type != cJSON_Object)
+    {
+        return 0;
+    }
+    
+
     if(cJSON_GetObjectItem(lp_dest_json, name)!= NULL)
     {
         cJSON_ReplaceItemInObject(lp_dest_json, name,  (b ? cJSON_CreateTrue() : cJSON_CreateFalse()) );
@@ -206,18 +229,23 @@ cjson* cjson_set_bool(cjson* pJson, const char* name, bbool b)
         cJSON_AddItemToObject(lp_dest_json, name, (b ? cJSON_CreateTrue() : cJSON_CreateFalse()) );
     }
     
-    return pJson;
+    return 1;
 }
 
 
 
-cjson* cjson_set_null(cjson* pJson, const char* name)
+bbool cjson_set_null(cjson* pJson, const char* name)
 {
     if(!pJson || !name)
     {
-        return NULL;
+        return 0;
     }
     cJSON* lp_dest_json = pJson->item ? pJson->item : pJson->child;
+    
+    if(!lp_dest_json ||lp_dest_json->type != cJSON_Object)
+    {
+        return 0;
+    }
     
     if(cJSON_GetObjectItem(lp_dest_json, name)!= NULL)
     {
@@ -228,7 +256,7 @@ cjson* cjson_set_null(cjson* pJson, const char* name)
         cJSON_AddItemToObject(lp_dest_json, name, cJSON_CreateNull() );
     }
     
-    return pJson;
+    return 1;
 }
 
 
@@ -240,15 +268,21 @@ cjson* cjson_set_null(cjson* pJson, const char* name)
 
 
 
-cjson* cjson_set_obj_idx(cjson* pJson, int idx, cjson* obj)
+bbool cjson_set_obj_idx(cjson* pJson, int idx, cjson* obj)
 {
     if(!pJson || !obj)
     {
-        return NULL;
+        return 0;
     }
     cJSON* lp_dest_json = pJson->item ? pJson->item : pJson->child;
     cJSON* lp_src_json = obj->item ? obj->item : obj->child;
+
     
+    if(!lp_dest_json ||lp_dest_json->type != cJSON_Array)
+    {
+        return 0;
+    }
+
     if(cJSON_GetArrayItem(lp_dest_json, idx)!= NULL)
     {
         cJSON_ReplaceItemInArray(lp_dest_json, idx, lp_src_json);
@@ -259,18 +293,23 @@ cjson* cjson_set_obj_idx(cjson* pJson, int idx, cjson* obj)
     }
     
     free(obj);
-    return pJson;
+    return 1;
 }
 
 
 
-cjson* cjson_set_str_idx(cjson* pJson, int idx, char* str)
+bbool cjson_set_str_idx(cjson* pJson, int idx, char* str)
 {
     if(!pJson || !str)
     {
-        return NULL;
+        return 0;
     }
     cJSON* lp_dest_json = pJson->item ? pJson->item : pJson->child;
+
+    if(!lp_dest_json ||lp_dest_json->type != cJSON_Array)
+    {
+        return 0;
+    }
     
     if(cJSON_GetArrayItem(lp_dest_json, idx)!= NULL)
     {
@@ -281,20 +320,25 @@ cjson* cjson_set_str_idx(cjson* pJson, int idx, char* str)
         cJSON_AddItemToArray(lp_dest_json, cJSON_CreateString(str));
     }
     
-    return pJson;
+    return 1;
 }
 
 
 
 
 
-cjson* cjson_set_num_idx(cjson* pJson, int idx, int num)
+bbool cjson_set_num_idx(cjson* pJson, int idx, int num)
 {
     if(!pJson)
     {
-        return NULL;
+        return 0;
     }
     cJSON* lp_dest_json = pJson->item ? pJson->item : pJson->child;
+
+    if(!lp_dest_json || lp_dest_json->type != cJSON_Array)
+    {
+        return 0;
+    }
     
     if(cJSON_GetArrayItem(lp_dest_json, idx)!= NULL)
     {
@@ -306,16 +350,21 @@ cjson* cjson_set_num_idx(cjson* pJson, int idx, int num)
     }
 
     
-    return pJson;
+    return 1;
 }
 
-cjson* cjson_set_bool_idx(cjson* pJson, int idx, bbool b)
+bbool cjson_set_bool_idx(cjson* pJson, int idx, bbool b)
 {
     if(!pJson)
     {
-        return NULL;
+        return 0;
     }
     cJSON* lp_dest_json = pJson->item ? pJson->item : pJson->child;
+
+    if(!lp_dest_json || lp_dest_json->type != cJSON_Array)
+    {
+        return 0;
+    }
 
     if(cJSON_GetArrayItem(lp_dest_json, idx)!= NULL)
     {
@@ -327,20 +376,25 @@ cjson* cjson_set_bool_idx(cjson* pJson, int idx, bbool b)
     }
 
     
-    return pJson;
+    return 1;
 }
 
 
 
-cjson* cjson_set_null_idx(cjson* pJson, int idx)
+bbool cjson_set_null_idx(cjson* pJson, int idx)
 {
     if(!pJson)
     {
-        return NULL;
+        return 0;
     }
     
     cJSON* lp_dest_json = pJson->item ? pJson->item : pJson->child;
     
+    if(!lp_dest_json || lp_dest_json->type != cJSON_Array)
+    {
+        return 0;
+    }
+
     if(cJSON_GetArrayItem(lp_dest_json, idx)!= NULL)
     {
         cJSON_ReplaceItemInArray(lp_dest_json, idx, cJSON_CreateNull() );
@@ -351,7 +405,7 @@ cjson* cjson_set_null_idx(cjson* pJson, int idx)
     }
     
     
-    return pJson;
+    return 1;
 }
 
 
@@ -415,7 +469,7 @@ int main()
         /* pjson->sbool(pjson, "bool", 10); */
         /* pjson->sbool(pjson, "bool2", 0); */
 //        pjson->obj(pjson, "age")->sstr_i(pjson, "age", 1, "555555");
-        pjson->obj(pjson, "age")->obj(pjson, "tagId")->snum_i(pjson, 6, 100);
+        pjson->obj(pjson, "age")->obj(pjson, "age")->obj(pjson, "age")->snum(pjson, "tagId", 100);
         cjson_reset(pjson);
 
 //        pjson->snull(pjson, "null1");

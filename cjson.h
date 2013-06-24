@@ -13,27 +13,27 @@ typedef bbool (*fn_str) (cjson* this, const char*);
 typedef cjson* (*fn_objson) (cjson* this, const char*);
 typedef cjson* (*fn_objson_idx) (cjson* this, int idx);
 
-typedef cjson* (*fn_set_objson) (cjson* this, const char*, cjson* obj);
+typedef bbool (*fn_set_objson) (cjson* this, const char*, cjson* obj);
 
-typedef cjson* (*fn_set_strjson) (cjson* this, const char*, char* str);
+typedef bbool (*fn_set_strjson) (cjson* this, const char*, char* str);
 
-typedef cjson* (*fn_set_numjson) (cjson* this, const char*, int num);
+typedef bbool (*fn_set_numjson) (cjson* this, const char*, int num);
 
-typedef cjson* (*fn_set_booljson) (cjson* this, const char*, bbool b);
+typedef bbool (*fn_set_booljson) (cjson* this, const char*, bbool b);
 
-typedef cjson* (*fn_set_nulljson) (cjson* this, const char*);
+typedef bbool (*fn_set_nulljson) (cjson* this, const char*);
 
 
 
-typedef cjson* (*fn_set_objson_i) (cjson* this, int idx, cjson* obj);
+typedef bbool (*fn_set_objson_i) (cjson* this, int idx, cjson* obj);
 
-typedef cjson* (*fn_set_strjson_i) (cjson* this, int idx, char* str);
+typedef bbool (*fn_set_strjson_i) (cjson* this, int idx, char* str);
 
-typedef cjson* (*fn_set_numjson_i) (cjson* this, int idx, int num);
+typedef bbool (*fn_set_numjson_i) (cjson* this, int idx, int num);
 
-typedef cjson* (*fn_set_booljson_i) (cjson* this, int idx, bbool b);
+typedef bbool (*fn_set_booljson_i) (cjson* this, int idx, bbool b);
 
-typedef cjson* (*fn_set_nulljson_i) (cjson* this, int idx );
+typedef bbool (*fn_set_nulljson_i) (cjson* this, int idx );
 
 
 typedef char* (*fn_objson_str) (cjson* this);
@@ -81,28 +81,28 @@ cjson* cjson_obj_idx(cjson* pJson, int idx);
 
 
 
-cjson* cjson_set_obj(cjson* pJson, const char* name, cjson* obj);
+bbool cjson_set_obj(cjson* pJson, const char* name, cjson* obj);
 
-cjson* cjson_set_str(cjson* pJson, const char* name, char* str);
-
-
-cjson* cjson_set_num(cjson* pJson, const char* name, int num);
-
-cjson* cjson_set_bool(cjson* pJson, const char* name, bbool b);
-
-cjson* cjson_set_null(cjson* pJson, const char* name);
+bbool cjson_set_str(cjson* pJson, const char* name, char* str);
 
 
-cjson* cjson_set_obj_idx(cjson* pJson, int idx, cjson* obj);
+bbool cjson_set_num(cjson* pJson, const char* name, int num);
 
-cjson* cjson_set_str_idx(cjson* pJson, int idx, char* str);
+bbool cjson_set_bool(cjson* pJson, const char* name, bbool b);
+
+bbool cjson_set_null(cjson* pJson, const char* name);
 
 
-cjson* cjson_set_num_idx(cjson* pJson, int idx, int num);
+bbool cjson_set_obj_idx(cjson* pJson, int idx, cjson* obj);
 
-cjson* cjson_set_bool_idx(cjson* pJson, int idx, bbool b);
+bbool cjson_set_str_idx(cjson* pJson, int idx, char* str);
 
-cjson* cjson_set_null_idx(cjson* pJson, int idx );
+
+bbool cjson_set_num_idx(cjson* pJson, int idx, int num);
+
+bbool cjson_set_bool_idx(cjson* pJson, int idx, bbool b);
+
+bbool cjson_set_null_idx(cjson* pJson, int idx );
 
 
 
